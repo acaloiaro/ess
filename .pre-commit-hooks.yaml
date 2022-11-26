@@ -1,0 +1,8 @@
+-   id: env-sample-sync
+    name: env.sample sync
+    description: Keeps `env.sample` files in sync with `.env`
+    entry: env-sample-sync.sh
+    language: script
+    always_run: true
+    pass_filenames: false
+    stages: [commit]
