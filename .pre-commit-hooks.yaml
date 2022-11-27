@@ -1,6 +1,6 @@
 -   id: env-sample-sync
     name: env.sample sync
-    description: Keeps `env.sample` files in sync with `.env`
+    description: Automatically and safely synchronize .env files with env.sample
     entry: env-sample-sync.sh
     language: script
     always_run: true
