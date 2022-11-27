@@ -1,4 +1,4 @@
-# env-sample-pre-commit-plugin
+# env-sample-sync 
 
 This [pre-commit plugin](https://pre-commit.com/#install) safely keeps `.env` files in sync with `env.sample`.
 
