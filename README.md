@@ -111,5 +111,7 @@ BAR=You can fetch bars from https://example.com/bars
 
 # Limitations
 
-Currently, this hook only supports `.env` files with environment variables of the form `VAR_NAME=VAR_VALUE`. [Direnv](https://direnv.net/)-style `.envrc` is not currently supported. Pull requests welcome!
+Currently, this hook only supports `.env` files with environment variables of the form `VAR_NAME=VAR_VALUE`.
+
+While this project does not directly support [Direnv](https://direnv.net/)-style `.envrc` files, direnv users are free to use its [`dotenv` std lib function](https://direnv.net/man/direnv-stdlib.1.html#codedotenv-ltdotenvpathgtcode).
 
