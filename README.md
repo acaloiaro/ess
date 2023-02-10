@@ -1,6 +1,6 @@
 # env-sample-sync 
 
-This [pre-commit plugin](https://pre-commit.com/#install) safely keeps `.env` files in sync with `env.sample`.
+A [pre-commit plugin](https://pre-commit.com/#install) that safely keeps `.env` files in sync with `env.sample`.
 
 It checks whether the local repository has an `.env` file and if one exists, it is scrubbed of secrets/values and made available as `env.sample`. This ensures that all application environment variables are safely and automatically documented without leaking secrets.
 
