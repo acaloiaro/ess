@@ -1,0 +1,33 @@
+name: Update README.md with latest Version
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PATH_TOKEN }} # Needs write access to the repo
+          ref: main
+
+
+      - name: Update files
+        uses: MathieuSoysal/file-updater-for-release@v1.0.3
+        with:
+          files: README.md # List of files to update
+          prefix: "rev: " # Prefix before the version, default is: ""
+          with-checkout: false # If you don't want to checkout the repo, default is: true
+
+      - name: Push changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          committer_name: GitHub Actions
+          committer_email: actions@github.com
+          add: README.md
+          message: 'Updated README.md with latest version number'
