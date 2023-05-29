@@ -20,7 +20,7 @@ Crucially, `env-sample-sync` allows comments in `env` files, which are carried o
 
 ## Installation
 
-Installation is required to run `env-sample-sync` manually, or as a native git hook. See [pre-commit configuration](#runing-as-a-pre-commit-plugin) for pre-commit usage.
+Installation is required to run `env-sample-sync` manually, or as a native git hook. See [pre-commit configuration](#running-as-a-pre-commit-plugin) for pre-commit usage.
 
 
 **Install from the releases page**
