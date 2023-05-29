@@ -1,4 +1,4 @@
-# env-sample-sync 
+# env-sample-sync
 
 A [pre-commit plugin](https://pre-commit.com/#install) that safely keeps `.env` files in sync with `env.sample`.
 
@@ -41,7 +41,7 @@ Add this hook to your repository as follows:
 cat <<EOF > .pre-commit-config.yaml
 repos:
 -   repo: https://github.com/acaloiaro/pre-commit-env-sample-sync.git
-    rev: 8c51d1e303eeb619ad42dd2259c3692faf456569
+    rev: v2.0.0
     hooks:
       - id: env-sample-sync
 EOF
@@ -65,7 +65,7 @@ This plugin accepts the following arguments
 ```yml
 repos:
 -   repo: https://github.com/acaloiaro/pre-commit-env-sample-sync.git
-    rev: 8c51d1e303eeb619ad42dd2259c3692faf456569
+    rev: v2.0.0
     hooks:
       - id: env-sample-sync
 ```
@@ -75,7 +75,7 @@ repos:
 ```yml
 repos:
 -   repo: https://github.com/acaloiaro/pre-commit-env-sample-sync.git
-    rev: 8c51d1e303eeb619ad42dd2259c3692faf456569
+    rev: v2.0.0
     hooks:
       - id: env-sample-sync
         args: ['--env-file=.env_file', '--sample-file=env_file.sample']
@@ -89,7 +89,7 @@ Sometimes environment variables need to conform to specific formats and it's nec
 ```yml
 repos:
 -   repo: https://github.com/acaloiaro/pre-commit-env-sample-sync.git
-    rev: 8c51d1e303eeb619ad42dd2259c3692faf456569
+    rev: v2.0.0
     hooks:
       - id: env-sample-sync
         args: [--example=FOO="Provide your foo here", --example=BAR="You can fetch bars from https://example.com/bars"]
