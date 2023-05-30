@@ -132,9 +132,9 @@ It's even possible to provide default/example values for every environment varia
 
 | Name                  | Description                                         | Example                                                   | Default                       |
 | --------------------  | --------------------------------------------------- | --------------------------------------------------------- | ----------------------------- |
-| `-e`/`--env-file`     | The name of the environment file                    | `--env-file=.secrets`                                     | `--env-file=.env`             |
-| `-s`/`--sample-file`  | The name of the sample environment file             | `--sample-file=secrets.example`                           | `--sample-file=env.sample`    |
-| `-x`/`--example`      | Provide examples for specific environment variables | `--example=FOO="Example FOO" --example=BAR="Example BAR"` | `--example=VAR=<VAR>`    |
+| `--env-file`     | The name of the environment file                    | `--env-file=.secrets`                                     | `--env-file=.env`             |
+| `--sample-file`  | The name of the sample environment file             | `--sample-file=secrets.example`                           | `--sample-file=env.sample`    |
+| `--example`      | Provide examples for specific environment variables | `--example=FOO="Example FOO" --example=BAR="Example BAR"` | `--example=VAR=<VAR>`    |
 
 ## Pre-commit Configuration Examples
 
