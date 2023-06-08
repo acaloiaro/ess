@@ -1,5 +1,7 @@
 # env-sample-sync
 
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://app.gitter.im/#/room/#env-sample-sync-dev:gitter.im)
+
 Automatically keep `.env` files in sync with `env.sample`
 
 ---
