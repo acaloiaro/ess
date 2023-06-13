@@ -83,7 +83,7 @@ This installs `env-sample-sync` as a pre-commit git hook with default arguments.
 
 The `install` command supports all [command flags](#command-flags).
 
-If you need to change `env-sample-sync` flags, simply run `env-sample-sync install` again with the desired flags.
+If you need to change `env-sample-sync` flags, simply run `env-sample-sync install` again with the desired flags and choose the overwrite [o] option when prompted what to do with the existing pre-commit hook.
 
 ## Running as a pre-commit plugin
 
