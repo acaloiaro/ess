@@ -245,7 +245,7 @@ func installHook(gitDirPath string) (err error) {
 
 	// Create a directory to place pre-commit-hook executable within
 	if _, err = os.Stat(hooksScriptDirPath); os.IsNotExist(err) {
-		if err = os.Mkdir(hooksScriptDirPath, os.ModePerm); err != nil {
+		if err = os.MkdirAll(hooksScriptDirPath, os.ModePerm); err != nil {
 			return
 		}
 	}
