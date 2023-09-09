@@ -6,11 +6,14 @@ Automatically keep `.env` files in sync with `env.sample`
 
 ---
 
-`env-sample-sync` checks whether the local repository contains an `.env` file (configurable), scrubs it of secrets/values, and makes the scrubbed version available as `env.sample` (configurable).
+`env-sample-sync` checks whether the local repository contains an `.env` file (configurable), scrubs it of secrets/
+values, and makes the scrubbed version available as `env.sample` (configurable).
 
-This process can be run manually, or automatically as a git-hook, ensuring that all application environment variables are safely and automatically documented without leaking secrets.
+This process can be run manually, or automatically as a git-hook, ensuring that all application environment variables
+are safely and automatically documented without leaking secrets.
 
-Crucially, `env-sample-sync` allows comments in `env` files, which are carried over to `env.sample`. This lets developers add thorough environment variable documentation to source control.
+Crucially, `env-sample-sync` allows comments in `env` files, which are carried over to `env.sample`. This lets
+developers add thorough environment variable documentation to source control.
 
 # Installation & Usage
 
@@ -22,7 +25,8 @@ Crucially, `env-sample-sync` allows comments in `env` files, which are carried o
 
 ## Installation
 
-Installation is required to run `env-sample-sync` manually, or as a native git hook. See [pre-commit configuration](#running-as-a-pre-commit-plugin) for pre-commit usage.
+Installation is required to run `env-sample-sync` manually, or as a native git hook. See [pre-commit configuration]
+(#running-as-a-pre-commit-plugin) for pre-commit usage.
 
 
 **Install from the releases page**
@@ -33,6 +37,31 @@ Download [the latest release](https://github.com/acaloiaro/env-sample-sync/relea
 
 ```bash
 go install github.com/acaloiaro/env-sample-sync@latest
+```
+
+**Nix Flake**
+
+This application may be added as a flake input
+
+**flake.nix**
+```nix
+inputs.env-sample-sync = {
+  url = "github:acaloiaro/env-sample-sync";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+```
+
+**configuration.nix**
+```nix
+users.users.<USERNAME>.packages = [
+  ...
+  inputs.env-sample-sync.packages.${system}.default
+];
+```
+
+Or simly run directly
+```bash
+nix run github:acaloiaro/di-tui -- --username <USERNAME> --password <PASSWORD>
 ```
 
 ## Running manually
@@ -54,7 +83,8 @@ env-sample-sync --env-file=.env-file-name --sample-file=env-sample-file-name
 
 **Provide example values for variables**
 
-By default, `env-sample-sync` uses the name of environment variables in `<brackets>` as example values in `env.sample`, e.g. `FOO=secret value` is replaced with `FOO=<FOO>`. This behavior is customizable wit the `--example` flag.
+By default, `env-sample-sync` uses the name of environment variables in `<brackets>` as example values in `env.sample`,
+e.g. `FOO=secret value` is replaced with `FOO=<FOO>`. This behavior is customizable wit the `--example` flag.
 
 Add custom examples for variables `FOO` and `BAR`.
 
@@ -83,7 +113,8 @@ This installs `env-sample-sync` as a pre-commit git hook with default arguments.
 
 The `install` command supports all [command flags](#command-flags).
 
-If you need to change `env-sample-sync` flags, simply run `env-sample-sync install` again with the desired flags and choose the overwrite [o] option when prompted what to do with the existing pre-commit hook.
+If you need to change `env-sample-sync` flags, simply run `env-sample-sync install` again with the desired flags and
+choose the overwrite [o] option when prompted what to do with the existing pre-commit hook.
 
 ## Running as a pre-commit plugin
 
@@ -106,9 +137,11 @@ See [pre-commit configuration examples](#pre-commit-configuration-examples) for 
 
 # Background
 
-It's important to document the environment variables required to run applications, both in production and development. A great way to do so is with `env.sample` files, but sample files tend to get out of date very quickly.
+It's important to document the environment variables required to run applications, both in production and development. A
+great way to do so is with `env.sample` files, but sample files tend to get out of date very quickly.
 
-For example, let's say you're adding a new feature to your application and it requires the variable `FOO` to be set. While you're developing locally, you likely have a `.env` file that looks something like:
+For example, let's say you're adding a new feature to your application and it requires the variable `FOO` to be set.
+While you're developing locally, you likely have a `.env` file that looks something like:
 
 ```bash
 APPLICATION_SECRET=supersekrit
@@ -117,9 +150,12 @@ APPLICATION_SECRET=supersekrit
 FOO="My super secret value for foo"
 ```
 
-Working on large teams, it's common to share these `.env` files somewhere secure where all developers have access to them. Retrieval is often integrated into application startup and/or bootstrap processes.
+Working on large teams, it's common to share these `.env` files somewhere secure where all developers have access to
+them. Retrieval is often integrated into application startup and/or bootstrap processes.
 
-But working on open source projects or teams with less trust and less shared infrastructure, it's more common to share an `env.sample`. `env-sample-sync` automatically keeps the sample file in sync with `.env`, so you don't have to. Your `.env` file stays the same, and is automatically converted to the following `env.sample`:
+But working on open source projects or teams with less trust and less shared infrastructure, it's more common to share
+an `env.sample`. `env-sample-sync` automatically keeps the sample file in sync with `.env`, so you don't have to. Your
+`.env` file stays the same, and is automatically converted to the following `env.sample`:
 
 ```bash
 APPLICATION_SECRET=<APPLICATION_SECRET>
@@ -132,8 +168,8 @@ It's even possible to provide default/example values for every environment varia
 
 ## Command Flags
 
-| Name                  | Description                                         | Example                                                   | Default                       |
-| --------------------  | --------------------------------------------------- | --------------------------------------------------------- | ----------------------------- |
+| Name             | Description                                         | Example                                                   | Default                       |
+| ---------------  | --------------------------------------------------- | --------------------------------------------------------- | ----------------------------- |
 | `--env-file`     | The name of the environment file                    | `--env-file=.secrets`                                     | `--env-file=.env`             |
 | `--sample-file`  | The name of the sample environment file             | `--sample-file=secrets.example`                           | `--sample-file=env.sample`    |
 | `--example`      | Provide examples for specific environment variables | `--example=FOO="Example FOO" --example=BAR="Example BAR"` | `--example=VAR=<VAR>`    |
@@ -163,7 +199,9 @@ repos:
 
 ### Customize variable example values
 
-Sometimes environment variables need to conform to specific formats and it's necessary to provide better documentation. For this reason, environment variable examples may be provided in lieu of the default behavior, which is to use the environment variable name surrounded by `<brackets like this>` in sample files.
+Sometimes environment variables need to conform to specific formats and it's necessary to provide better documentation.
+For this reason, environment variable examples may be provided in lieu of the default behavior, which is to use the
+environment variable name surrounded by `<brackets like this>` in sample files.
 
 ```yml
 repos:
@@ -187,8 +225,4 @@ Example sample file output
 FOO=Provide your foo here
 BAR=You can fetch bars from https://example.com/bars
 ```
-
-# Limitations
-
-While this project does not directly support [Direnv](https://direnv.net/)-style `.envrc` files, direnv users are free to use its [`dotenv` std lib function](https://direnv.net/man/direnv-stdlib.1.html#codedotenv-ltdotenvpathgtcode) with this utility.
 
