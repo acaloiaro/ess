@@ -61,7 +61,7 @@ users.users.<USERNAME>.packages = [
 
 Or simly run directly
 ```bash
-nix run github:acaloiaro/di-tui -- --username <USERNAME> --password <PASSWORD>
+nix run github:acaloiaro/env-sample-sync
 ```
 
 ## Running manually
