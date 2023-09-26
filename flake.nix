@@ -32,7 +32,7 @@
         in
         {
           default = pkgs.buildGoModule {
-            pname = "env-sample-sync";
+            pname = "ess";
             inherit version;
             # In 'nix develop', we don't need a copy of the source tree
             # in the Nix store.
@@ -60,7 +60,7 @@
       apps = forAllSystems (system: {
         default = {
             type = "app";
-            program = "${self.packages.${system}.default}/bin/env-sample-sync";
+            program = "${self.packages.${system}.default}/bin/ess";
         };
       });
      };

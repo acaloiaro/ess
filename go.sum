@@ -1,2 +1,4 @@
 github.com/hashicorp/go-envparse v0.1.0 h1:bE++6bhIsNCPLvgDZkYqo3nA+/PFI51pkrHdmPSDFPY=
 github.com/hashicorp/go-envparse v0.1.0/go.mod h1:OHheN1GoygLlAkTlXLXvAdnXdZxy8JUweQ1rAXx1xnc=
+github.com/kardolus/chatgpt-cli v1.3.1 h1:6+P/ajo5GoPzNgCIuFbJ4UUdU3Gmg2BQc3E+ogPptXQ=
+github.com/kardolus/chatgpt-cli v1.3.1/go.mod h1:PdFwHa368+zVfR7k25EVXvmojBCcwn0zsmLLGHolpb8=

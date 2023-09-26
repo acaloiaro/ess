@@ -1,4 +1,4 @@
-# env-sample-sync
+# ess (env sample sync)
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://app.gitter.im/#/room/#env-sample-sync-dev:gitter.im)
 
@@ -6,18 +6,18 @@ Automatically keep `.env` files in sync with `env.sample`
 
 ---
 
-`env-sample-sync` checks whether the local repository contains an `.env` file (configurable), scrubs it of secrets/
+`ess` checks whether the local repository contains an `.env` file (configurable), scrubs it of secrets/
 values, and makes the scrubbed version available as `env.sample` (configurable).
 
 This process can be run manually, or automatically as a git-hook, ensuring that all application environment variables
 are safely and automatically documented without leaking secrets.
 
-Crucially, `env-sample-sync` allows comments in `env` files, which are carried over to `env.sample`. This lets
+Crucially, `ess` allows comments in `env` files, which are carried over to `env.sample`. This lets
 developers add thorough environment variable documentation to source control.
 
 # Installation & Usage
 
-`env-sample-sync` can be run in three ways:
+`ess` can be run in three ways:
 
 1. Manually
 2. As a native git-hook
@@ -25,18 +25,18 @@ developers add thorough environment variable documentation to source control.
 
 ## Installation
 
-Installation is required to run `env-sample-sync` manually, or as a native git hook. See [pre-commit configuration]
+Installation is required to run `ess` manually, or as a native git hook. See [pre-commit configuration]
 (#running-as-a-pre-commit-plugin) for pre-commit usage.
 
 
 **Install from the releases page**
 
-Download [the latest release](https://github.com/acaloiaro/env-sample-sync/releases/latest) and add it to your `$PATH`.
+Download [the latest release](https://github.com/acaloiaro/ess/releases/latest) and add it to your `$PATH`.
 
 **Install with `go install`**
 
 ```bash
-go install github.com/acaloiaro/env-sample-sync@latest
+go install github.com/acaloiaro/ess@latest
 ```
 
 **Nix Flake**
@@ -45,8 +45,8 @@ This application may be added as a flake input
 
 **flake.nix**
 ```nix
-inputs.env-sample-sync = {
-  url = "github:acaloiaro/env-sample-sync";
+inputs.ess = {
+  url = "github:acaloiaro/ess";
   inputs.nixpkgs.follows = "nixpkgs";
 };
 ```
@@ -55,7 +55,7 @@ inputs.env-sample-sync = {
 ```nix
 users.users.<USERNAME>.packages = [
   ...
-  inputs.env-sample-sync.packages.${system}.default
+  inputs.ess.packages.${system}.default
 ];
 ```
 
@@ -66,30 +66,30 @@ nix run github:acaloiaro/di-tui -- --username <USERNAME> --password <PASSWORD>
 
 ## Running manually
 
-`env-sample-sync` can be run with no arguments to use defaults.
+`ess` can be run with no arguments to use defaults.
 
 **Sync `.env` with `env.sample`**
 
 ```bash
-env-sample-sync
+ess
 ```
 
 
 **With a non-default `.env` and `env.sample` location**
 
 ```bash
-env-sample-sync --env-file=.env-file-name --sample-file=env-sample-file-name
+ess --env-file=.env-file-name --sample-file=env-sample-file-name
 ```
 
 **Provide example values for variables**
 
-By default, `env-sample-sync` uses the name of environment variables in `<brackets>` as example values in `env.sample`,
+By default, `ess` uses the name of environment variables in `<brackets>` as example values in `env.sample`,
 e.g. `FOO=secret value` is replaced with `FOO=<FOO>`. This behavior is customizable wit the `--example` flag.
 
 Add custom examples for variables `FOO` and `BAR`.
 
 ```bash
-env-sample-sync --example=FOO="must be a valid UUID" --example=BAR="bars must be a positive integer"
+ess --example=FOO="must be a valid UUID" --example=BAR="bars must be a positive integer"
 ```
 
 The above invocation yields the following `env.sample`
@@ -103,17 +103,17 @@ BAR=bars must be a positive integer
 
 ## Running as a native git-hook
 
-To add `env-sample-sync` as a pre-commit git hook in a git repository, run:
+To add `ess` as a pre-commit git hook in a git repository, run:
 
 ```bash
-env-sample-sync install
+ess install
 ```
 
-This installs `env-sample-sync` as a pre-commit git hook with default arguments.
+This installs `ess` as a pre-commit git hook with default arguments.
 
 The `install` command supports all [command flags](#command-flags).
 
-If you need to change `env-sample-sync` flags, simply run `env-sample-sync install` again with the desired flags and
+If you need to change `ess` flags, simply run `ess install` again with the desired flags and
 choose the overwrite [o] option when prompted what to do with the existing pre-commit hook.
 
 ## Running as a pre-commit plugin
@@ -124,10 +124,10 @@ This utility can be used as a [pre-commit plugin](https://pre-commit.com/#instal
 ```bash
 cat <<EOF > .pre-commit-config.yaml
 repos:
--   repo: https://github.com/acaloiaro/env-sample-sync.git
+-   repo: https://github.com/acaloiaro/ess.git
     rev: v2.5.0
     hooks:
-      - id: env-sample-sync
+      - id: ess
 EOF
 pre-commit install
 git add .pre-commit-config.yaml
@@ -154,7 +154,7 @@ Working on large teams, it's common to share these `.env` files somewhere secure
 them. Retrieval is often integrated into application startup and/or bootstrap processes.
 
 But working on open source projects or teams with less trust and less shared infrastructure, it's more common to share
-an `env.sample`. `env-sample-sync` automatically keeps the sample file in sync with `.env`, so you don't have to. Your
+an `env.sample`. `ess` automatically keeps the sample file in sync with `.env`, so you don't have to. Your
 `.env` file stays the same, and is automatically converted to the following `env.sample`:
 
 ```bash
@@ -180,20 +180,20 @@ It's even possible to provide default/example values for every environment varia
 
 ```yml
 repos:
--   repo: https://github.com/acaloiaro/env-sample-sync.git
+-   repo: https://github.com/acaloiaro/ess.git
     rev: v2.5.0
     hooks:
-      - id: env-sample-sync
+      - id: ess
 ```
 
 ### Customize `.env` and `env.sample` paths
 
 ```yml
 repos:
--   repo: https://github.com/acaloiaro/env-sample-sync.git
+-   repo: https://github.com/acaloiaro/ess.git
     rev: v2.5.0
     hooks:
-      - id: env-sample-sync
+      - id: ess
         args: ['--env-file=.env_file', '--sample-file=env_file.sample']
 ```
 
@@ -205,10 +205,10 @@ environment variable name surrounded by `<brackets like this>` in sample files.
 
 ```yml
 repos:
--   repo: https://github.com/acaloiaro/env-sample-sync.git
+-   repo: https://github.com/acaloiaro/ess.git
     rev: v2.5.0
     hooks:
-      - id: env-sample-sync
+      - id: ess
         args: [--example=FOO="Provide your foo here", --example=BAR="You can fetch bars from https://example.com/bars"]
 ```
 

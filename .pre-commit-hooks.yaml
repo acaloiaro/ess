@@ -1,8 +1,8 @@
--   id: env-sample-sync
-    name: env-sample-sync env sample file synchronizer
+-   id: ess
+    name: ess - env sample sync
     description: Automatically and safely synchronize .env files with env.sample
     language: golang
-    entry: env-sample-sync
+    entry: ess
     always_run: true
     pass_filenames: false
     stages: [commit]
