@@ -42,7 +42,7 @@
             # necessary because of how Go requires network access to resolve
             # VCS.  See https://www.tweag.io/blog/2021-03-04-gomod2nix/ for
             # details. 
-            vendorSha256 = "sha256-nnJCCKzlKIZmNBSrX9FejDHCvhSdChepQU9Pl0hbIaw=";
+            vendorSha256 = "sha256-Nxx88tK4bNg4kMXjamJZZLxWs/zPkI9Ukp9ATaBxo5o=";
           };
         });
       
