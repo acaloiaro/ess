@@ -61,7 +61,7 @@ users.users.<USERNAME>.packages = [
 
 Or simly run directly
 ```bash
-nix run github:acaloiaro/env-sample-sync
+nix run github:acaloiaro/ess
 ```
 
 ## Running manually
