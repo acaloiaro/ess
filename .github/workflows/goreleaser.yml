@@ -1,14 +1,13 @@
 name: goreleaser
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches:
-      - main
+    - main
+  workflow_dispatch:
 
 jobs:
   goreleaser:
-    if: "github.event.pull_request.merged == true"
     runs-on: ubuntu-latest
     permissions:
       contents: write
