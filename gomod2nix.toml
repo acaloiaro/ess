@@ -1,0 +1,6 @@
+schema = 3
+
+[mod]
+  [mod."github.com/hashicorp/go-envparse"]
+    version = "v0.1.0"
+    hash = "sha256-MkHaxEZDHVz84IImaC8+s4lAgNLhsaAMSkVmt55JC3M="

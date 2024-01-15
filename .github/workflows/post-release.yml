@@ -2,7 +2,7 @@ name: Update README.md with latest Version
 
 on:
   release:
-    types: [published]
+    types: [released]
 
 jobs:
   publish:
@@ -17,11 +17,18 @@ jobs:
           ref: main
 
 
-      - name: Update files
+      - name: Update README
         uses: MathieuSoysal/file-updater-for-release@v1.0.3
         with:
           files: README.md # List of files to update
           prefix: "rev: " # Prefix before the version, default is: ""
+          with-checkout: false # If you don't want to checkout the repo, default is: true
+
+      - name: Update default.nix
+        uses: MathieuSoysal/file-updater-for-release@v1.0.3
+        with:
+          files: default.nix # List of files to update
+          prefix: "version = \"" # Prefix before the version, default is: ""
           with-checkout: false # If you don't want to checkout the repo, default is: true
 
       - name: Push changes
