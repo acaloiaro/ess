@@ -12,23 +12,31 @@ jobs:
     permissions:
       contents: write
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      -
-        name: Bump version and push tag
-        uses: anothrNick/github-tag-action@v1
+      - name: Setup go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'go.mod'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: minor
-      -
-        name: Set up Go
-        uses: actions/setup-go@v3
-      -
-        name: Run GoReleaser
+      - name: Bump version and push tag 
+        shell: bash
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "Github Actions"
+          go install git.sr.ht/~jcmuller/semver-bumper@latest
+          OLD_TAG=$(git tag --list 'v*' | semver-bumper -s)
+          NEW_TAG=$(git tag --list 'v*' | semver-bumper --increment minor)
+          sed -i "s/$OLD_TAG/$NEW_TAG/g" default.nix
+          git add default.nix
+          git commit -m "Bump version in default.nix" --allow-empty
+          git tag $NEW_TAG
+          git push 
+          git push --tags        
+      - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
           distribution: goreleaser

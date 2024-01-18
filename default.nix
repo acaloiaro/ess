@@ -14,7 +14,7 @@
 
 buildGoApplication {
   pname = "ess";
-  version = "2.7.0";
+  version = "v2.8.0";
   pwd = ./.;
   src = ./.;
   modules = ./gomod2nix.toml;
