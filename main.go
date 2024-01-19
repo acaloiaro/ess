@@ -19,7 +19,7 @@ import (
 )
 
 const VERSION = "2.10.0"
-const BUILD_DATE = "2024-01-19T12:19:09-07:00"
+const BUILD_DATE = "2024-01-19T19:40:01+00:00"
 
 type exampleFlag map[string]string
 
