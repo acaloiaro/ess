@@ -28,12 +28,15 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "Github Actions"
           go install git.sr.ht/~jcmuller/semver-bumper@latest
-          OLD_TAG=$(git tag --list 'v*' | semver-bumper -s)
-          NEW_TAG=$(git tag --list 'v*' | semver-bumper --increment minor)
-          sed -i "s/$OLD_TAG/$NEW_TAG/g" default.nix
+          newTag=$(git tag --list 'v*' | semver-bumper --increment minor)
+          buildDate=$(date --iso-8601=seconds)
+          sed -i -e "s@BUILD_DATE = \".\+\"@BUILD_DATE = \"${buildDate/v}\"@" main.go
+          sed -i -e "s@VERSION = \".\+\"@VERSION = \"${newTag/v}\"@" main.go
+          sed -i -e "s@version = \".\+\"@version = \"${newTag/v}\"@" default.nix
           git add default.nix
-          git commit -m "Bump version in default.nix" --allow-empty
-          git tag $NEW_TAG
+          git add main.go
+          git commit -m "Bump release version"
+          git tag $newTag
           git push 
           git push --tags        
       - name: Run GoReleaser

@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -16,6 +17,9 @@ import (
 
 	"github.com/hashicorp/go-envparse"
 )
+
+const VERSION = "2.10.0"
+const BUILD_DATE = "2024-01-19T12:19:09-07:00"
 
 type exampleFlag map[string]string
 
@@ -29,27 +33,32 @@ func (e exampleFlag) String() string {
 }
 
 func (e exampleFlag) Set(value string) (err error) {
-	exampleParts := strings.Split(value, "=")
-	if len(exampleParts) != 2 {
+	key, value, found := strings.Cut(value, "=")
+	if !found {
 		err = errors.New("examples must be provided in KEY=VALUE format")
 		return
 	}
 
-	e[exampleParts[0]] = exampleParts[1]
+	e[key] = value
 
 	return nil
 }
 
 var (
-	envFileFlag    string
-	sampleFileFlag string
 	examplesFlag   = make(exampleFlag)
+	debugFlag      bool
+	envFileFlag    string
+	logLevel       = slog.LevelInfo
+	sampleFileFlag string
+	versionFlag    bool
 )
 
 func init() {
-	flag.StringVar(&envFileFlag, "env-file", ".env", "-env-file=.env_file")
-	flag.StringVar(&sampleFileFlag, "sample-file", "env.sample", "-sample-file=env_var.sample")
-	flag.Var(examplesFlag, "example", "--example=FOO=\"my foo value\" --example=BAR=\"my bar value\"")
+	flag.StringVar(&envFileFlag, "env-file", ".env", "set the path to your env file: ess -env-file=.env_file [sync|install]")
+	flag.StringVar(&sampleFileFlag, "sample-file", "env.sample", "set the path to your sample file: ess -sample-file=env_var.sample [sync|install]")
+	flag.BoolVar(&debugFlag, "debug", false, "print debug logs: ess --debug [sync|install]")
+	flag.Var(examplesFlag, "example", "set example values for samples: ess --example=BAR=\"my bar value\" [sync|install]")
+	flag.BoolVar(&versionFlag, "version", false, "print the current ess version: ess --version")
 
 	flag.Usage = func() {
 		cmd := os.Args[0]
@@ -59,6 +68,16 @@ func init() {
 	}
 
 	flag.Parse()
+
+	if versionFlag {
+		fmt.Fprintf(os.Stdout, "ess version: %s built at: %s\n", VERSION, BUILD_DATE)
+		os.Exit(0)
+	}
+
+	if debugFlag {
+		slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})))
+	}
+
 }
 
 func main() {
@@ -74,12 +93,14 @@ func main() {
 	case "sync":
 		sync(projectPath)
 		cmd := exec.Command("git", "add", filepath.Join(projectPath, sampleFileFlag))
+		slog.Debug("running git command", "args", cmd.Args)
 		err := cmd.Run()
 		if err != nil {
 			fmt.Printf("unable to add sample file '%s' to git: %v", sampleFileFlag, err)
 			os.Exit(1)
 		}
 	case "install":
+		slog.Debug("installing hook to", "path", gitDirPath)
 		err := installHook(gitDirPath)
 		if err != nil {
 			fmt.Println("unable to install pre-commit hook:", err)
@@ -88,12 +109,15 @@ func main() {
 	default:
 		fmt.Printf("ess: unknown command '%s'\n\n", command)
 		flag.Usage()
+		os.Exit(1)
 	}
 }
 
 func sync(dir string) {
 	envFilePath := filepath.Join(dir, envFileFlag)
 	sampleFilePath := filepath.Join(dir, sampleFileFlag)
+
+	slog.Debug("syncing env file with sample", "env_file", envFilePath, "sample_file", sampleFilePath)
 
 	envFileReader, err := os.Open(envFilePath)
 	if err != nil {
@@ -113,6 +137,8 @@ func sync(dir string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
+	slog.Debug("sample file written", "sample_file", sampleFilePath)
 }
 
 func writeSampleFile(sampleFileContent map[string]string, envFilePath, sampleFilePath string) (err error) {
@@ -148,6 +174,7 @@ func writeSampleFile(sampleFileContent map[string]string, envFilePath, sampleFil
 }
 
 func scrubEnvFile(envFile map[string]string, examples map[string]string) {
+	slog.Debug("scrubbing env file of secrets")
 	for envFileKey := range envFile {
 		exampleVal, ok := examples[envFileKey]
 		if ok {
@@ -168,6 +195,7 @@ func replaceSecrets(envFileEntry string, sampleFileContent map[string]string) (n
 	for secretKey, secretPlaceholder := range sampleFileContent {
 		r = regexp.MustCompile(fmt.Sprintf("(%s.*=.*)", secretKey))
 		if r.MatchString(envFileEntry) {
+			slog.Debug("replacing secrets with sample values", "secret_key", secretKey, "placeholder", secretPlaceholder)
 			newLine = r.ReplaceAllString(envFileEntry, fmt.Sprintf("%s=%s", secretKey, secretPlaceholder))
 		}
 	}
@@ -232,9 +260,11 @@ func installHook(gitDirPath string) (err error) {
 		var response string
 		fmt.Scanln(&response)
 		if response == "c" || (response != "o" && response != "a") {
+			slog.Debug("user declined to overwrite the existing pre-commit hook")
 			os.Exit(0)
 		}
 		if response == "a" {
+			slog.Debug("will append pre-commit hook script to existing script", "script_path", preCommitHookScriptPath)
 			// read the existing content of the pre-commit file
 			oldPreCommitScript, err = os.ReadFile(preCommitHookScriptPath)
 			if err != nil {
@@ -252,6 +282,7 @@ func installHook(gitDirPath string) (err error) {
 		}
 	}
 
+	slog.Debug("hook will be installed in", "dir_path", hooksScriptDirPath)
 	preCommitHookPath := filepath.Join(hooksScriptDirPath, "0-ess")
 	preCommitHook, err := os.OpenFile(preCommitHookPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0o755)
 	if err != nil {
@@ -291,6 +322,7 @@ func installHook(gitDirPath string) (err error) {
 		OldPreCommitScript: string(oldPreCommitScript),
 	}
 
+	slog.Debug("hook metadata", "data", templateValues)
 	err = tmpl.Execute(buff, templateValues)
 	if err != nil {
 		return err
