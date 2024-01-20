@@ -2,5 +2,6 @@ schema = 3
 
 [mod]
   [mod."github.com/hashicorp/go-envparse"]
-    version = "v0.1.0"
-    hash = "sha256-MkHaxEZDHVz84IImaC8+s4lAgNLhsaAMSkVmt55JC3M="
+    version = "v0.3.0"
+    hash = "sha256-pbffSgC8BDtvkQAyI6ILkrMleI8m2JtedV0PL64Ok3I="
+    replaced = "github.com/acaloiaro/go-envparse"

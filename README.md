@@ -6,14 +6,45 @@ Automatically keep `.env` files in sync with `env.sample`
 
 ---
 
-`ess` checks whether the local repository contains an `.env` file (configurable), scrubs it of secrets/
-values, and makes the scrubbed version available as `env.sample` (configurable).
+`ess` transforms environment files containing secrets (e.g. `.env`, `.envrc`) into sample environment files (e.g. 
+`env.sample`) that may be safely checked into git.
 
-This process can be run manually, or automatically as a git-hook, ensuring that all application environment variables
-are safely and automatically documented without leaking secrets.
+`ess` may be run manually by running the cli executable, or automatically by installing the pre-commit hook with `ess install`
+in any git repository. Installing `ess` as a git hook ensures that project environment files are automatically and safely 
+revision controlled when they change. 
 
-Crucially, `ess` allows comments in `env` files, which are carried over to `env.sample`. This lets
-developers add thorough environment variable documentation to source control.
+Doing so allows environment configurations to be shared across teams without leaking secrets.
+
+## How it works 
+
+By default, `ess` checks the local directory for environment files named `.env`. The env file name is controlled by
+the `--env-file` switch. Next, the environment file is parsed for environment variables. Environment variables 
+may be of the following forms:
+
+```
+# Standard environment variables
+FOO=bar baz
+FOO="bar baz"
+FOO='bar baz'
+
+# Envrc environment variable
+export FOO=bar baz
+export FOO="bar baz"
+export FOO='bar baz'
+```
+
+By default, variable values are replaced with innert values named after the variable, e.g. `FOO=bar` is replaced by `FOO=<FOO>`.
+
+Example values may be provided with the `--example` switch, e.g. `--exmaple=FOO="enter your foo here"` will set `FOO`'s 
+value as follows `FOO="enter your foo here"` in the sample file. 
+
+Finally, when all variables are replaced, the sample file is written with the sanitized variable values, along with all 
+non-variable strings from the file. By default the sample file is named `env.sample`, which is controlled by the `--env-sample`
+switch. 
+
+Because `ess` permits non-variable strings in environment files, it means that both comments and script code (in the case 
+of `.envrc` files) is included in environment sample files. This allows environment files to not only be checked into git, but 
+documented with comments. 
 
 # Installation & Usage
 
@@ -212,7 +243,7 @@ repos:
         args: [--example=FOO="Provide your foo here", --example=BAR="You can fetch bars from https://example.com/bars"]
 ```
 
-Example env file
+Example environment file
 `.env`
 ```
 FOO=the_value_of_my_secret_foo

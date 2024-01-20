@@ -125,9 +125,9 @@ func sync(dir string) {
 		os.Exit(0)
 	}
 
-	envFile, err := envparse.Parse(envFileReader)
+	envFile, err := envparse.ParsePermissive(envFileReader)
 	if err != nil {
-		fmt.Println("unable to parse env file:", err)
+		fmt.Fprintf(os.Stderr, "unable to parse env file (%s): %v", envFilePath, err)
 		os.Exit(1)
 	}
 
