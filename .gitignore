@@ -1,1 +1,4 @@
 /gomod2nix-template
+.direnv
+.devenv 
+.pre-commit-config.yaml
