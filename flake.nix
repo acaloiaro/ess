@@ -20,6 +20,14 @@
   } @ inputs: let
     forEachSystem = nixpkgs.lib.genAttrs (import systems);
   in {
+    packages = forEachSystem (system: let
+      callPackage = nixpkgs.darwin.apple_sdk_11_0.callPackage or nixpkgs.legacyPackages.${system}.callPackage;
+    in {
+      default = callPackage ./. {
+        inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
+      };
+    });
+
     devShells = forEachSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
     in {
