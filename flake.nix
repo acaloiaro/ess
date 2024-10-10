@@ -44,6 +44,7 @@
               go-tools
               gopls
               pre-commit
+              svu
             ];
 
             pre-commit.hooks.gomod2nix = {
