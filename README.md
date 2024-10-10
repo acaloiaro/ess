@@ -90,7 +90,7 @@ users.users.<USERNAME>.packages = [
 ];
 ```
 
-Or simly run directly
+Or simply run directly
 ```bash
 nix run github:acaloiaro/ess
 ```
@@ -171,7 +171,7 @@ See [pre-commit configuration examples](#pre-commit-configuration-examples) for 
 It's important to document the environment variables required to run applications, both in production and development. A
 great way to do so is with `env.sample` files, but sample files tend to get out of date very quickly.
 
-For example, let's say you're adding a new feature to your application and it requires the variable `FOO` to be set.
+For example, let's say you're adding a new feature to your application, and it requires the variable `FOO` to be set.
 While you're developing locally, you likely have a `.env` file that looks something like:
 
 ```bash
@@ -230,7 +230,7 @@ repos:
 
 ### Customize variable example values
 
-Sometimes environment variables need to conform to specific formats and it's necessary to provide better documentation.
+Sometimes environment variables need to conform to specific formats, and it's necessary to provide better documentation.
 For this reason, environment variable examples may be provided in lieu of the default behavior, which is to use the
 environment variable name surrounded by `<brackets like this>` in sample files.
 

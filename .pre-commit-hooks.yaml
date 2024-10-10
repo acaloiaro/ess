@@ -5,4 +5,4 @@
     entry: ess
     always_run: true
     pass_filenames: false
-    stages: [commit]
+    stages: [pre-commit]

@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
-    devenv.url = "github:cachix/devenv/v0.6.3";
+    devenv.url = "github:cachix/devenv";
 
     gomod2nix = {
       url = "github:nix-community/gomod2nix";
@@ -37,14 +37,14 @@
           {
             packages = with pkgs; [
               automake
-              go_1_21
+              go_1_22
               gomod2nix.legacyPackages.${system}.gomod2nix
               gotools
               golangci-lint
               go-tools
               gopls
               pre-commit
-              flyctl
+              svu
             ];
 
             pre-commit.hooks.gomod2nix = {
