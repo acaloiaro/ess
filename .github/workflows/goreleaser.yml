@@ -27,18 +27,18 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "Github Actions"
-          go install git.sr.ht/~jcmuller/semver-bumper@latest
-          newTag=$(git tag --list 'v*' | semver-bumper --increment minor)
-          buildDate=$(date --iso-8601=seconds)
-          sed -i -e "s@BUILD_DATE = \".\+\"@BUILD_DATE = \"${buildDate/v}\"@" main.go
-          sed -i -e "s@VERSION = \".\+\"@VERSION = \"${newTag/v}\"@" main.go
-          sed -i -e "s@version = \".\+\"@version = \"${newTag/v}\"@" default.nix
+          go install github.com/caarlos0/svu@latest
+          OLD_TAG=$(svu current --strip-prefix)
+          NEW_TAG=$(svu next --strip-prefix)
+          [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0 
+          sed -i "s/$OLD_TAG/$NEW_TAG/g" default.nix
+          sed -i "s/$OLD_TAG/$NEW_TAG/g" main.go
           git add default.nix
-          git add main.go
-          git commit -m "Bump release version"
-          git tag $newTag
+          git add main.go 
+          git commit -m "bump release version" --allow-empty
+          git tag v$NEW_TAG
           git push 
-          git push --tags        
+          git push --tags            
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:

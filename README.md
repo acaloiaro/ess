@@ -2,7 +2,7 @@
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://app.gitter.im/#/room/#env-sample-sync-dev:gitter.im)
 
-Automatically keep `.env` files in sync with `env.sample`
+Automatically keep `env.sample` files in sync with `.env`
 
 ---
 
@@ -202,8 +202,10 @@ It's even possible to provide default/example values for every environment varia
 | Name             | Description                                         | Example                                                   | Default                       |
 | ---------------  | --------------------------------------------------- | --------------------------------------------------------- | ----------------------------- |
 | `--env-file`     | The name of the environment file                    | `--env-file=.secrets`                                     | `--env-file=.env`             |
+| `--debug`        | Enable debugging                                    | `--debug`                                                 | `false`                       |
+| `--skip-git-add` | Skip performing `git add` after syncing             | `--skip-git-add`                                          | `false`                       |
 | `--sample-file`  | The name of the sample environment file             | `--sample-file=secrets.example`                           | `--sample-file=env.sample`    |
-| `--example`      | Provide examples for specific environment variables | `--example=FOO="Example FOO" --example=BAR="Example BAR"` | `--example=VAR=<VAR>`    |
+| `--example`      | Provide examples for specific environment variables | `--example=FOO="Example FOO" --example=BAR="Example BAR"` | `--example=VAR=<VAR>`         |
 
 ## Pre-commit Configuration Examples
 
