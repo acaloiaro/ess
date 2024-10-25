@@ -47,8 +47,8 @@ func (e exampleFlag) Set(value string) (err error) {
 var (
 	examplesFlag   = make(exampleFlag)
 	debugFlag      bool
+	skipGitAddFlag bool
 	envFileFlag    string
-	logLevel       = slog.LevelInfo
 	sampleFileFlag string
 	versionFlag    bool
 )
@@ -57,6 +57,7 @@ func init() {
 	flag.StringVar(&envFileFlag, "env-file", ".env", "set the path to your env file: ess -env-file=.env_file [sync|install]")
 	flag.StringVar(&sampleFileFlag, "sample-file", "env.sample", "set the path to your sample file: ess -sample-file=env_var.sample [sync|install]")
 	flag.BoolVar(&debugFlag, "debug", false, "print debug logs: ess --debug [sync|install]")
+	flag.BoolVar(&skipGitAddFlag, "skip-git-add", false, "skip doing 'git add' on generated sample file after sync")
 	flag.Var(examplesFlag, "example", "set example values for samples: ess --example=BAR=\"my bar value\" [sync|install]")
 	flag.BoolVar(&versionFlag, "version", false, "print the current ess version: ess --version")
 
@@ -92,6 +93,11 @@ func main() {
 	switch command {
 	case "sync":
 		sync(projectPath)
+
+		if skipGitAddFlag {
+			return
+		}
+
 		cmd := exec.Command("git", "add", filepath.Join(projectPath, sampleFileFlag))
 		slog.Debug("running git command", "args", cmd.Args)
 		err := cmd.Run()
