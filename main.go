@@ -18,7 +18,7 @@ import (
 	"github.com/hashicorp/go-envparse"
 )
 
-const VERSION = "2.13.0"
+const VERSION = "2.14.0"
 const BUILD_DATE = "2024-10-10T18:01:34+00:00"
 
 type exampleFlag map[string]string
