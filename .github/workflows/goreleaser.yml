@@ -33,9 +33,8 @@ jobs:
           [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0
           echo default.nix README.md main.go | xargs sed -i "s/$(svu current)/$(svu next)/g"
           echo default.nix README.md main.go | xargs sed -i "s/$(svu current --prefix='')/$(svu next --prefix='')/g"
-          git add default.nix
-          git add main.go
-          git add README.md
+          sed -i "s/BUILD_DATE = \".*\"/BUILD_DATE = \"$(date -Iseconds)\"/g" main.go 
+          git add default.nix main.go README.md
           git commit -m "bump release version" --allow-empty
           git tag v$NEW_TAG
           git tag $NEW_TAG
