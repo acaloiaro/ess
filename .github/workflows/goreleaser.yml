@@ -31,8 +31,8 @@ jobs:
           OLD_TAG=$(svu current --strip-prefix)
           NEW_TAG=$(svu next --strip-prefix)
           [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0
-          rg $(svu current) default.nix main.go README.md --files-with-matches | xargs sed -i "s/$(svu current)/$(svu next)/g"
-          rg $(svu current --prefix='') default.nix main.go README.md --files-with-matches | xargs sed -i "s/$(svu current --prefix='')/$(svu next --prefix='')/g"
+          echo default.nix README.md main.go | xargs sed -i "s/$(svu current)/$(svu next)/g"
+          echo default.nix README.md main.go | xargs sed -i "s/$(svu current --prefix='')/$(svu next --prefix='')/g"
           git add default.nix
           git add main.go
           git add README.md

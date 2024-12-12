@@ -54,14 +54,6 @@
               description = "Run gomod2nix before commit";
               entry = "${gomod2nix.legacyPackages.${system}.gomod2nix}/bin/gomod2nix";
             };
-
-            pre-commit.hooks.svu = {
-              enable = true;
-              pass_filenames = false;
-              name = "svu";
-              description = "Bump version numbers in code";
-              entry = "${pkgs.svu}/bin/svu --help";
-            };
           }
         ];
       };
