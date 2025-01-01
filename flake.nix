@@ -15,7 +15,6 @@
     forEachSystem = nixpkgs.lib.genAttrs (import systems);
   in {
     packages = forEachSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
       callPackage = nixpkgs.darwin.apple_sdk_11_0.callPackage or nixpkgs.legacyPackages.${system}.callPackage;
     in {
       default = (callPackage ./default.nix {}).${system};
