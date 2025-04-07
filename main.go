@@ -15,7 +15,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/hashicorp/go-envparse"
+	"github.com/acaloiaro/go-envparse"
 )
 
 const VERSION = "2.14.1"
