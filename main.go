@@ -18,8 +18,8 @@ import (
 	"github.com/acaloiaro/go-envparse"
 )
 
-const VERSION = "2.14.1"
-const BUILD_DATE = "2024-12-12T19:42:19+00:00"
+const VERSION = "2.15.0"
+const BUILD_DATE = "2025-04-07T14:42:15+00:00"
 
 type exampleFlag map[string]string
 
