@@ -1,7 +1,5 @@
 module github.com/acaloiaro/ess
 
-go 1.21
+go 1.24
 
-replace github.com/hashicorp/go-envparse v0.1.0 => github.com/acaloiaro/go-envparse v0.3.0
-
-require github.com/hashicorp/go-envparse v0.1.0
+require github.com/acaloiaro/go-envparse v0.5.0
