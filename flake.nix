@@ -57,7 +57,6 @@
                       sed -i "s|vendorHash = \".*\"|vendorHash = \"$(nix hash path ./vendor)\"|g" default.nix
                       git add default.nix main.go README.md
                       git commit -m "bump release version" --allow-empty
-                      git tag v$NEW_TAG
                       git tag $NEW_TAG
                       git push
                       git push --tags
