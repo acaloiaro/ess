@@ -1,62 +1,51 @@
 {
+  description = "ess (env sampple sync)";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    systems.url = "github:nix-systems/default";
+    flake-utils.url = "github:numtide/flake-utils";
     devenv.url = "github:cachix/devenv";
-
-    gomod2nix = {
-      url = "github:nix-community/gomod2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
     self,
     nixpkgs,
+    flake-utils,
     devenv,
-    systems,
-    gomod2nix,
-    ...
-  } @ inputs: let
-    forEachSystem = nixpkgs.lib.genAttrs (import systems);
-  in {
-    packages = forEachSystem (system: let
-      callPackage = nixpkgs.darwin.apple_sdk_11_0.callPackage or nixpkgs.legacyPackages.${system}.callPackage;
-    in {
-      default = callPackage ./. {
-        inherit (gomod2nix.legacyPackages.${system}) buildGoApplication;
-      };
-    });
+  } @ inputs:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
+      in {
+        packages.default = pkgs.callPackage ./. {};
+        CGO_ENABLED = 0;
+        defaultPackage = self.packages.${system}.default;
+        apps.default = flake-utils.lib.mkApp {
+          drv = self.packages.${system}.default;
+        };
 
-    devShells = forEachSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      default = devenv.lib.mkShell {
-        inherit inputs pkgs;
-        modules = [
-          {
-            packages = with pkgs; [
-              automake
-              go_1_23
-              gomod2nix.legacyPackages.${system}.gomod2nix
-              gotools
-              golangci-lint
-              go-tools
-              gopls
-              pre-commit
-              svu
+        devShells = let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in {
+          default = devenv.lib.mkShell {
+            inherit inputs pkgs;
+            modules = [
+              {
+                packages = with pkgs; [
+                  act
+                  automake
+                  go_1_24
+                  gotools
+                  golangci-lint
+                  go-tools
+                  gopls
+                  svu
+                ];
+              }
             ];
-
-            pre-commit.hooks.gomod2nix = {
-              enable = true;
-              pass_filenames = false;
-              name = "gomod2nix";
-              description = "Run gomod2nix before commit";
-              entry = "${gomod2nix.legacyPackages.${system}.gomod2nix}/bin/gomod2nix";
-            };
-          }
-        ];
-      };
-    });
-  };
+          };
+        };
+      }
+    );
 }
