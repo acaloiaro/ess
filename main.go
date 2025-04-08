@@ -14,12 +14,16 @@ import (
 	"regexp"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/acaloiaro/go-envparse"
 )
 
-const VERSION = "2.14.1"
-const BUILD_DATE = "2024-12-12T19:42:19+00:00"
+var (
+	version = "dev"
+	commit  = "none"
+	date    = time.Now().Format(time.RFC822)
+)
 
 type exampleFlag map[string]string
 
@@ -71,7 +75,7 @@ func init() {
 	flag.Parse()
 
 	if versionFlag {
-		fmt.Fprintf(os.Stdout, "ess version: %s built at: %s\n", VERSION, BUILD_DATE)
+		fmt.Fprintf(os.Stdout, "ess version: %s built at: %s from commit: %s\n", version, date, commit)
 		os.Exit(0)
 	}
 

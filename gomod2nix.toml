@@ -1,6 +1,0 @@
-schema = 3
-
-[mod]
-  [mod."github.com/acaloiaro/go-envparse"]
-    version = "v0.5.0"
-    hash = "sha256-ptmJ08G0/rn1yCsDxT5fvkTpMZ1KJRCiOp7pHhdR9dE="
