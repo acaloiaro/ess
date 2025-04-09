@@ -22,7 +22,7 @@ import (
 var (
 	version = "dev"
 	commit  = "none"
-	date    = time.Now().Format(time.RFC822)
+	date    = time.Now().Format(time.RFC3339)
 )
 
 type exampleFlag map[string]string
