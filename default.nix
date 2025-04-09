@@ -1,19 +1,10 @@
-{
-  pkgs ? (
-    let
-      inherit (builtins) fetchTree fromJSON readFile;
-      inherit ((fromJSON (readFile ./flake.lock)).nodes) nixpkgs;
-    in
-      import (fetchTree nixpkgs.locked) {}
-  ),
-  buildGoModule ? pkgs.buildGoModule,
-}:
-buildGoModule {
+{pkgs ? import <nixpkgs> {}, ...}:
+pkgs.buildGoModule {
   pname = "ess";
   version = "2.16.4";
-  pwd = ./.;
   src = ./.;
   vendorHash = null;
+
   meta = {
     description = "ess (env-sample-sync): automatically and safely synchronize env.sample files with .env";
     license = pkgs.lib.licenses.bsd2;

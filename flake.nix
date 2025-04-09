@@ -18,7 +18,7 @@
           inherit system;
         };
       in {
-        packages.default = pkgs.callPackage ./. {};
+        packages.default = pkgs.callPackage ./. {inherit pkgs;};
         CGO_ENABLED = 0;
         defaultPackage = self.packages.${system}.default;
         apps.default = flake-utils.lib.mkApp {
