@@ -56,6 +56,7 @@
                       echo default.nix README.md | xargs sed -i "s/v$OLD_TAG/v$NEW_TAG/g"
                       go mod vendor
                       sed -i "s|vendorHash = \".*\"|vendorHash = \"$(nix hash path ./vendor)\"|g" default.nix
+                      rm -rf vendor
                       git add default.nix README.md
                       git commit -m "bump release version" --allow-empty
                       git tag v$NEW_TAG
