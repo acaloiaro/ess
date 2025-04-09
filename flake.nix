@@ -53,9 +53,10 @@
                       NEW_TAG=$(svu next | sed 's/^v//g')
                       [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0
                       echo default.nix README.md | xargs sed -i "s/$OLD_TAG/$NEW_TAG/g"
+                      echo default.nix README.md | xargs sed -i "s/v$OLD_TAG/v$NEW_TAG/g"
                       go mod vendor
                       sed -i "s|vendorHash = \".*\"|vendorHash = \"$(nix hash path ./vendor)\"|g" default.nix
-                      git add default.nix main.go README.md
+                      git add default.nix README.md
                       git commit -m "bump release version" --allow-empty
                       git tag v$NEW_TAG
                       git push
