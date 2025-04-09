@@ -10,7 +10,7 @@
 }:
 buildGoModule {
   pname = "ess";
-  version = "2.16.3";
+  version = "2.16.4";
   pwd = ./.;
   src = ./.;
   vendorHash = "sha256-ooTP3mS7AEzwJm1JKebL0V2lqVge3WnpFZcbr1f/LIg=";
