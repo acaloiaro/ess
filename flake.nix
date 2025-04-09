@@ -18,12 +18,11 @@
           inherit system;
         };
       in {
-        packages.default = pkgs.callPackage ./. {inherit pkgs;};
-        CGO_ENABLED = 0;
-        defaultPackage = self.packages.${system}.default;
-        apps.default = flake-utils.lib.mkApp {
-          drv = self.packages.${system}.default;
+        packages = rec {
+          ess = pkgs.callPackage ./. {inherit pkgs;};
+          default = ess;
         };
+        CGO_ENABLED = 0;
 
         devShells = let
           pkgs = nixpkgs.legacyPackages.${system};
@@ -43,7 +42,7 @@
                   svu
                 ];
 
-                scripts = with pkgs; {
+                scripts = {
                   prepare-release = {
                     description = "prepare a release";
                     exec = ''
@@ -54,9 +53,6 @@
                       [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0
                       echo default.nix README.md | xargs sed -i "s/$OLD_TAG/$NEW_TAG/g"
                       echo default.nix README.md | xargs sed -i "s/v$OLD_TAG/v$NEW_TAG/g"
-                      go mod vendor
-                      sed -i "s|vendorHash = \".*\"|vendorHash = \"$(nix hash path ./vendor)\"|g" default.nix
-                      rm -rf vendor
                       git add default.nix README.md
                       git commit -m "bump release version" --allow-empty
                       git tag v$NEW_TAG
