@@ -2,4 +2,4 @@
 .devenv
 .pre-commit-config.yaml
 result/
-ess
+/ess
