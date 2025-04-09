@@ -1,6 +1,5 @@
-/gomod2nix-template
 .direnv
-.devenv 
+.devenv
 .pre-commit-config.yaml
 result/
 ess
