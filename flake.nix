@@ -49,15 +49,15 @@
                     exec = ''
                       git config --global user.email 'actions@github.com'
                       git config --global user.name 'Github Actions'
-                      OLD_TAG=$(svu current)
-                      NEW_TAG=$(svu next)
+                      OLD_TAG=$(svu current | sed 's/^v//g')
+                      NEW_TAG=$(svu next | sed 's/^v//g')
                       [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0
-                      echo default.nix README.md | xargs sed -i "s/$(svu current)/$(svu next)/g"
+                      echo default.nix README.md | xargs sed -i "s/$OLD_TAG/$NEW_TAG/g"
                       go mod vendor
                       sed -i "s|vendorHash = \".*\"|vendorHash = \"$(nix hash path ./vendor)\"|g" default.nix
                       git add default.nix main.go README.md
                       git commit -m "bump release version" --allow-empty
-                      git tag $NEW_TAG
+                      git tag v$NEW_TAG
                       git push
                       git push --tags
                     '';
