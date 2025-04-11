@@ -45,20 +45,22 @@
                 scripts = {
                   prepare-release = {
                     description = "prepare a release";
-                    exec = ''
-                      git config --global user.email 'actions@github.com'
-                      git config --global user.name 'Github Actions'
-                      OLD_TAG=$(svu current | sed 's/^v//g')
-                      NEW_TAG=$(svu next | sed 's/^v//g')
-                      [ "$OLD_TAG" == "$NEW_TAG" ] && echo "no version bump" && exit 0
-                      echo default.nix README.md | xargs sed -i "s/$OLD_TAG/$NEW_TAG/g"
-                      echo default.nix README.md | xargs sed -i "s/v$OLD_TAG/v$NEW_TAG/g"
-                      git add default.nix README.md
-                      git commit -m "bump release version" --allow-empty
-                      git tag v$NEW_TAG
-                      git push
-                      git push --tags
-                    '';
+                    exec =
+                      # bash
+                      ''
+                        git config --global user.email 'actions@github.com'
+                        git config --global user.name 'Github Actions'
+                        OLD_VERSION=$(svu current --tag.prefix "")
+                        NEW_VERSION=$(svu next --tag.prefix "" --always)
+                        [ "$OLD_VERSION" == "$NEW_VERSION" ] && echo "no version bump" && exit 0
+                        sed -i "s/$OLD_VERSION/$NEW_VERSION/g" README.md
+                        echo "$NEW_VERSION" >version.txt
+                        git add version.txt README.md
+                        git commit -m "bump release version" --allow-empty
+                        git tag v$NEW_VERSION
+                        git push
+                        git push --tags
+                      '';
                   };
                 };
               }

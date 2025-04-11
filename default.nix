@@ -1,7 +1,7 @@
 {pkgs ? import <nixpkgs> {}, ...}:
 pkgs.buildGoModule {
   pname = "ess";
-  version = "2.16.4";
+  version = pkgs.lib.strings.removeSuffix "\n" (builtins.readFile ./version.txt);
   src = ./.;
   vendorHash = null;
 
