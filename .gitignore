@@ -1,5 +1,4 @@
 .direnv
-.devenv
 .pre-commit-config.yaml
 result/
 /ess
