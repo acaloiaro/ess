@@ -59,7 +59,6 @@
               ]
               ++ (with pkgs; [
                 act
-                automake
                 go_1_24
                 gotools
                 golangci-lint
