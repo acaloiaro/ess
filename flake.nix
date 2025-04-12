@@ -66,12 +66,6 @@
                 go-tools
                 gopls
               ]);
-
-            shellHook =
-              # bash
-              ''
-                export CGO_ENABLED=0
-              '';
           };
         };
       }
