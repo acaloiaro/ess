@@ -6,6 +6,7 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     flake-utils,
     ...
@@ -17,7 +18,7 @@
         };
       in {
         packages = rec {
-          ess = pkgs.callPackage ./. {inherit pkgs;};
+          ess = pkgs.callPackage ./. {inherit pkgs self;};
           default = ess;
         };
 
