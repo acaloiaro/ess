@@ -1,21 +1,22 @@
 {
-  pkgs ? (
-    let
-      inherit (builtins) fetchTree fromJSON readFile;
-      inherit ((fromJSON (readFile ./flake.lock)).nodes) nixpkgs;
-    in
-      import (fetchTree nixpkgs.locked) {}
-  ),
-  buildGoModule ? pkgs.buildGoModule,
+  self,
+  pkgs ? import <nixpkgs> {},
+  ...
 }:
-buildGoModule {
+pkgs.buildGoModule rec {
+  env.CGO_ENABLED = 0;
   pname = "ess";
-  version = "2.16.4";
-  pwd = ./.;
+  version = pkgs.lib.strings.removeSuffix "\n" (builtins.readFile ./version.txt);
   src = ./.;
-  vendorHash = "sha256-ooTP3mS7AEzwJm1JKebL0V2lqVge3WnpFZcbr1f/LIg=";
+  vendorHash = null;
+  ldflags = [
+    "-X 'main.version=${version}-nix'"
+    "-X 'main.commit=${self.rev or "dev"}'"
+  ];
+
   meta = {
     description = "ess (env-sample-sync): automatically and safely synchronize env.sample files with .env";
+    homepage = "https://github.com/acaloiaro/ess";
     license = pkgs.lib.licenses.bsd2;
   };
 }
