@@ -158,7 +158,7 @@ This utility can be used as a [pre-commit plugin](https://pre-commit.com/#instal
 cat <<EOF >.pre-commit-config.yaml
 repos:
 -   repo: https://github.com/acaloiaro/ess.git
-    rev: v2.18.2
+    rev: v2.18.3
     hooks:
       - id: ess
 EOF
@@ -216,7 +216,7 @@ It's even possible to provide default/example values for every environment varia
 ```yml
 repos:
 -   repo: https://github.com/acaloiaro/ess.git
-    rev: v2.18.2
+    rev: v2.18.3
     hooks:
       - id: ess
 ```
@@ -226,7 +226,7 @@ repos:
 ```yml
 repos:
 -   repo: https://github.com/acaloiaro/ess.git
-    rev: v2.18.2
+    rev: v2.18.3
     hooks:
       - id: ess
         args: ['--env-file=.env_file', '--sample-file=env_file.sample']
@@ -241,7 +241,7 @@ environment variable name surrounded by `<brackets like this>` in sample files.
 ```yml
 repos:
 -   repo: https://github.com/acaloiaro/ess.git
-    rev: v2.18.2
+    rev: v2.18.3
     hooks:
       - id: ess
         args: [--example=FOO="Provide your foo here", --example=BAR="You can fetch bars from https://example.com/bars"]
