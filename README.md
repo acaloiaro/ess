@@ -1,3 +1,5 @@
+**NOTICE**: This repository has been moved to [https://code.adriano.fyi/me/ess](https://code.adriano.fyi/me/ess). Microsoft has shown little interest in stewarding what was once the best and largest open source community. This small act of migration is my way showing that we don't all support Microsoft's disinterest.
+
 # ess (env sample sync)
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://app.gitter.im/#/room/#env-sample-sync-dev:gitter.im)
